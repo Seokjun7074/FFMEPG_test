@@ -1,30 +1,15 @@
 import { useEffect, useRef } from "react";
 import * as S from "./VideoEditor.style";
-import { FFmpeg, createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg"; // https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md
+import { fetchFile } from "@ffmpeg/ffmpeg"; // https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md
+import { useFFmpeg } from "../hooks/useFFmpeg";
 
 interface VideoEditorProps {
   videoPreview: string;
 }
 
 const VideoEditor = ({ videoPreview }: VideoEditorProps) => {
-  const ffmpegRef = useRef<FFmpeg | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const init = async () => {
-    try {
-      await ffmpegRef.current!.load();
-    } catch (error) {
-      console.log("[init FFMPEG]", error);
-    }
-  };
-
-  useEffect(() => {
-    ffmpegRef.current = createFFmpeg({
-      log: false,
-      corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-    });
-    init();
-  }, []);
+  const { ffmpegRef } = useFFmpeg();
 
   const cutVideo = async () => {
     const ffmpeg = ffmpegRef.current;
@@ -44,7 +29,6 @@ const VideoEditor = ({ videoPreview }: VideoEditorProps) => {
       "newVideo.mp4"
     );
     const result = ffmpeg.FS("readFile", "newVideo.mp4");
-
     const resultPreview = URL.createObjectURL(
       new Blob([result.buffer], { type: "video/mp4" })
     );
