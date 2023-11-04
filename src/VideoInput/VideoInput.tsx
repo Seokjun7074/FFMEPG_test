@@ -1,14 +1,14 @@
+import { useSetRecoilState } from "recoil";
 import * as S from "./VideoInput.styled";
+import { videoAtom } from "../store/video";
 
-interface VideoInputProps {
-  setVideoFile: React.Dispatch<React.SetStateAction<File[]>>;
-  setVideoPreview: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const VideoInput = ({ setVideoFile, setVideoPreview }: VideoInputProps) => {
+const VideoInput = () => {
+  const setVideoState = useSetRecoilState(videoAtom);
   const imageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVideoFile([e.target.files![0]]);
-    setVideoPreview(URL.createObjectURL(e.target.files![0]));
+    setVideoState({
+      file: e.target.files![0],
+      url: URL.createObjectURL(e.target.files![0]),
+    });
   };
 
   return (
