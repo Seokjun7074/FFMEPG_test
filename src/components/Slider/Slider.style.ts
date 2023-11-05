@@ -4,15 +4,15 @@ export const SlideWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 900px;
-  height: 600px;
+  /* width: 900px; */
+  /* height: 600px; */
   background-color: antiquewhite;
 `;
 
 export const FilterPriceSlide = styled.div`
   position: relative;
   height: 40px;
-  width: 650px;
+  /* width: 650px; */
   border-radius: 10px;
   background-color: lightgray;
 `;

@@ -12,3 +12,13 @@ export const videoAtom = atom<VideoAton>({
     url: "",
   },
 });
+
+export const startAtom = atom({
+  key: "startAtom",
+  default: 0,
+});
+
+export const endAtom = atom({
+  key: "endAtom",
+  default: 0,
+});

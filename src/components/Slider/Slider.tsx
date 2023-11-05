@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import * as S from "./Slider.style";
+import { useRecoilState } from "recoil";
+import { startAtom, endAtom } from "../../store/video";
 
-const Slider = () => {
-  const MIN = 0;
-  const MAX = 60;
+interface SliderProps {
+  duration: number;
+}
+
+const Slider = ({ duration }: SliderProps) => {
   const GAP = 0;
-  const [rangeMinValue, setRangeMinValue] = useState(MIN);
-  const [rangeMaxValue, setRangeMaxValue] = useState(MAX);
+  // 실제 시작,종료 값
+  const [rangeMinValue, setRangeMinValue] = useRecoilState(startAtom);
+  const [rangeMaxValue, setRangeMaxValue] = useRecoilState(endAtom);
+  // 색으로 보이는 부분
   const [rangeMinPercent, setRangeMinPercent] = useState(0);
   const [rangeMaxPercent, setRangeMaxPercent] = useState(0);
 
@@ -24,8 +30,8 @@ const Slider = () => {
         setRangeMaxValue(rangeMinValue + GAP);
         setRangeMinValue(rangeMaxValue - GAP);
       } else {
-        setRangeMinPercent((rangeMinValue / MAX) * 100);
-        setRangeMaxPercent(100 - (rangeMaxValue / MAX) * 100);
+        setRangeMinPercent((rangeMinValue / duration) * 100);
+        setRangeMaxPercent(100 - (rangeMaxValue / duration) * 100);
       }
     };
     twoRangeHandler();
@@ -39,8 +45,8 @@ const Slider = () => {
       <S.FilterPriceRangeWrap>
         <S.FilterPriceRangeMin
           type="range"
-          min={MIN}
-          max={MAX - GAP}
+          min={0}
+          max={duration - GAP}
           step="0.5"
           value={rangeMinValue}
           onChange={(e) => {
@@ -49,8 +55,8 @@ const Slider = () => {
         />
         <S.FilterPriceRangeMax
           type="range"
-          min={MIN + GAP}
-          max={MAX}
+          min={0 + GAP}
+          max={duration}
           step="0.5"
           value={rangeMaxValue}
           onChange={(e) => {
