@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./VideoEditor.style";
-import { fetchFile } from "@ffmpeg/ffmpeg"; // https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md
+import { fetchFile } from "@ffmpeg/ffmpeg";
 import { useFFmpeg } from "../hooks/useFFmpeg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { endAtom, startAtom, videoAtom } from "../store/video";
@@ -33,7 +33,9 @@ const VideoEditor = () => {
       "newVideo.mp4"
     );
     const result = ffmpeg.FS("readFile", "newVideo.mp4");
-    const resultPreview = URL.createObjectURL(new Blob([result.buffer], { type: "video/mp4" }));
+    const resultPreview = URL.createObjectURL(
+      new Blob([result.buffer], { type: "video/mp4" })
+    );
     console.log(resultPreview);
   };
 
@@ -47,8 +49,10 @@ const VideoEditor = () => {
 
   return (
     <S.VideoEditoerWrapper>
-      {videoState.url && <S.VideoTag src={videoState.url} ref={videoRef} controls />}
-      <Slider duration={duration} />
+      {videoState.url && (
+        <S.VideoTag src={videoState.url} ref={videoRef} controls />
+      )}
+      <Slider duration={duration} videoRef={videoRef} />
       <h1
         onClick={() => {
           console.log(startTime, endTime);
